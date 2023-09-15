@@ -762,7 +762,7 @@ If ($null -ne $ProvisionedPackage)
 }
 
 ##Tweak reg permissions
-invoke-webrequest -uri "https://github.com/andrew-s-taylor/public/raw/main/De-Bloat/SetACL.exe" -outfile "C:\Windows\Temp\SetACL.exe"
+invoke-webrequest -uri "https://raw.githubusercontent.com/eko365sb/public/main/de-bloat/SetACL.exe" -outfile "C:\Windows\Temp\SetACL.exe"
 C:\Windows\Temp\SetACL.exe -on "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications" -ot reg -actn setowner -ownr "n:$everyone"
  C:\Windows\Temp\SetACL.exe -on "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications" -ot reg -actn ace -ace "n:$everyone;p:full"
 
@@ -1002,7 +1002,7 @@ $appname = $_.Name
 }
 
 ##Remove HP Connect Optimizer
-invoke-webrequest -uri "https://raw.githubusercontent.com/andrew-s-taylor/public/main/De-Bloat/HPConnOpt.iss" -outfile "C:\Windows\Temp\HPConnOpt.iss"
+invoke-webrequest -uri "https://raw.githubusercontent.com/eko365sb/public/main/de-bloat/HPConnOpt.iss" -outfile "C:\Windows\Temp\HPConnOpt.iss"
 
 &'C:\Program Files (x86)\InstallShield Installation Information\{6468C4A5-E47E-405F-B675-A70A70983EA6}\setup.exe' @('-s', '-f1C:\Windows\Temp\HPConnOpt.iss')
 
@@ -1286,7 +1286,7 @@ if ($mcafeeinstalled -eq "true") {
 ### Download McAfee Consumer Product Removal Tool ###
 write-host "Downloading McAfee Removal Tool"
 # Download Source
-$URL = 'https://github.com/andrew-s-taylor/public/raw/main/De-Bloat/mcafeeclean.zip'
+$URL = 'https://raw.githubusercontent.com/eko365sb/public/main/de-bloat/mcafeeclean.zip'
 
 # Set Save Directory
 $destination = 'C:\ProgramData\Debloat\mcafee.zip'
