@@ -104,9 +104,7 @@ if ($liveversion -ne $currentversion) {
 write-host "Script has been updated, please download the latest version from $liveuri" -ForegroundColor Red
 }
 }
-Get-ScriptVersion -liveuri "https://raw.githubusercontent.com/eko365sb/public/de-bloat/RemoveBloat.ps1"
-
-
+Get-ScriptVersion -liveuri "https://raw.githubusercontent.com/eko365sb/public/main/de-bloat/RemoveBloat.ps1"
 
 
 #Create Folder
@@ -285,7 +283,7 @@ switch ($locale) {
 
     #Removes AppxPackages
     $WhitelistedApps = 'Microsoft.WindowsNotepad|Microsoft.CompanyPortal|Microsoft.ScreenSketch|Microsoft.Paint3D|Microsoft.WindowsCalculator|Microsoft.WindowsStore|Microsoft.Windows.Photos|CanonicalGroupLimited.UbuntuonWindows|`
-    |Microsoft.MicrosoftStickyNotes|Microsoft.MSPaint|Microsoft.WindowsCamera|.NET|Framework|`
+    |Microsoft.MicrosoftStickyNotes|Microsoft.MSPaint|Microsoft.WindowsCamera|.NET|Framework|Microsoft.RemoteDesktop|`
     Microsoft.HEIFImageExtension|Microsoft.ScreenSketch|Microsoft.StorePurchaseApp|Microsoft.VP9VideoExtensions|Microsoft.WebMediaExtensions|Microsoft.WebpImageExtension|Microsoft.DesktopAppInstaller|WindSynthBerry|MIDIBerry|Slack'
     #NonRemovable Apps that where getting attempted and the system would reject the uninstall, speeds up debloat and prevents 'initalizing' overlay when removing apps
     $NonRemovable = '1527c705-839a-4832-9118-54d4Bd6a0c89|c5e2524a-ea46-4f67-841f-6a9465d9d515|E2A4F912-2574-4A75-9BB0-0D023378592B|F46D4000-FD22-4DB4-AC8E-4E1DDDE828FE|InputApp|Microsoft.AAD.BrokerPlugin|Microsoft.AccountsControl|`
@@ -308,7 +306,7 @@ switch ($locale) {
         "Microsoft.Messaging"
         "Microsoft.Microsoft3DViewer"
         "Microsoft.MicrosoftOfficeHub"
-        "Microsoft.MicrosoftSolitaireCollection"
+        #"Microsoft.MicrosoftSolitaireCollection"
         "Microsoft.NetworkSpeedTest"
         "Microsoft.MixedReality.Portal"
         "Microsoft.News"
@@ -318,7 +316,6 @@ switch ($locale) {
         "Microsoft.OneConnect"
         "Microsoft.People"
         "Microsoft.Print3D"
-        "Microsoft.RemoteDesktop"
         "Microsoft.SkypeApp"
         "Microsoft.StorePurchaseApp"
         "Microsoft.Office.Todo.List"
@@ -340,7 +337,7 @@ switch ($locale) {
         "Microsoft.YourPhone"
         "Microsoft.XboxGamingOverlay_5.721.10202.0_neutral_~_8wekyb3d8bbwe"
         "Microsoft.GamingApp"
-        "SpotifyAB.SpotifyMusic"
+        #"SpotifyAB.SpotifyMusic"
         "Disney.37853FC22B2CE"
         "*EclipseManager*"
         "*ActiproSoftwareLLC*"
@@ -357,7 +354,7 @@ switch ($locale) {
         "*Minecraft*"
         "*Royal Revolt*"
         "*Sway*"
-        "*Speed Test*"
+        #"*Speed Test*"
         "*Dolby*"
         "*Office*"
         "*Disney*"
