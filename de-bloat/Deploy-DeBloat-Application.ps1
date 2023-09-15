@@ -1,29 +1,29 @@
 <#PSScriptInfo
-.VERSION 2.1
-.GUID 91dfcf8e-2e73-4440-bbd5-0f9a74da7888
-.AUTHOR AndrewTaylor
-.DESCRIPTION Deploys De-Bloat application
-.COMPANYNAME 
-.COPYRIGHT GPL
-.TAGS bloat intune graph
-.LICENSEURI https://github.com/andrew-s-taylor/public/blob/main/LICENSE
-.PROJECTURI https://github.com/andrew-s-taylor/public
-.ICONURI 
-.EXTERNALMODULEDEPENDENCIES 
-.REQUIREDSCRIPTS 
-.EXTERNALSCRIPTDEPENDENCIES
-.RELEASENOTES
+    .VERSION 2.1
+    .GUID 91dfcf8e-2e73-4440-bbd5-0f9a74da7888
+    .AUTHOR AndrewTaylor
+    .DESCRIPTION Deploys De-Bloat application
+    .COMPANYNAME 
+    .COPYRIGHT GPL
+    .TAGS bloat intune graph
+    .LICENSEURI https://github.com/andrew-s-taylor/public/blob/main/LICENSE
+    .PROJECTURI https://github.com/andrew-s-taylor/public
+    .ICONURI 
+    .EXTERNALMODULEDEPENDENCIES 
+    .REQUIREDSCRIPTS 
+    .EXTERNALSCRIPTDEPENDENCIES
+    .RELEASENOTES
 #>
 <#
 .SYNOPSIS
-  Deploys De-Bloat application
+    Deploys De-Bloat application
 .DESCRIPTION
-Deploys De-Bloat application
+    Deploys De-Bloat application
 
 .INPUTS
-None required
+    None required
 .OUTPUTS
-GridView
+    GridView
 .NOTES
   Version:        2.1
   Author:         Andrew Taylor
@@ -68,7 +68,7 @@ if ($liveversion -ne $currentversion) {
 write-host "Script has been updated, please download the latest version from $liveuri" -ForegroundColor Red
 }
 }
-Get-ScriptVersion -liveuri "https://raw.githubusercontent.com/andrew-s-taylor/public/main/De-Bloat/Deploy-DeBloat-Application.ps1"
+Get-ScriptVersion -liveuri "https://raw.githubusercontent.com/eko365sb/public/main/de-bloat/Deploy-DeBloat-Application.ps1"
 ##########################################################################################
 
 $ErrorActionPreference = "Continue"
@@ -109,8 +109,6 @@ else {
         exit
     }
 }
-
-
 
 #Install MS Graph if not available
 if (Get-Module -ListAvailable -Name Microsoft.Graph.Authentication) {
@@ -654,7 +652,7 @@ function Get-Win32AppBody() {
         $body = @{ "@odata.type" = "#microsoft.graph.win32LobApp" }
         $body.applicableArchitectures = "x64,x86"
         $body.description = $description
-        $body.developer = ""
+        $body.developer = "EKO365"
         $body.displayName = $displayName
         $body.fileName = $filename
         $body.installCommandLine = "msiexec /i `"$SetupFileName`""
@@ -685,7 +683,7 @@ function Get-Win32AppBody() {
         
         $body = @{ "@odata.type" = "#microsoft.graph.win32LobApp" }
         $body.description = $description
-        $body.developer = ""
+        $body.developer = "EKO365"
         $body.displayName = $displayName
         $body.fileName = $filename
         $body.installCommandLine = "$installCommandLine"
@@ -1281,15 +1279,16 @@ function new-aadgroups {
         $appid,
         $appname,
         $grouptype
+        $prefix
     )
     switch ($grouptype) {
         "install" {
-            $groupname = $appname + " Install Group"
+            $groupname = $prefix + $appname + "-Install"
             $nickname = $appid + "install"
             $groupdescription = "Group for installation and updating of $appname application"
         }
         "uninstall" {
-            $groupname = $appname + " Uninstall Group"
+            $groupname = $prefix + $appname + "-Uninstall"
             $nickname = $appid + "uninstall"
             $groupdescription = "Group for uninstallation of $appname application"
         }
@@ -1460,70 +1459,68 @@ $appid = "DeBloat"
 
 
 # Find the script
-$appurl = "https://raw.githubusercontent.com/andrew-s-taylor/public/main/De-Bloat/debloat-intune-script.ps1"
+$appurl = "https://raw.githubusercontent.com/eko365sb/public/main/de-bloat/debloat-intune-script.ps1"
 
 #Set the download location
 $output = $apppath + "\debloat-intune-script.ps1"
 
 Invoke-WebRequest -Uri $appurl -OutFile $output
 
+##Create Groups
+Write-Verbose "Creating AAD Groups for $appname"
+$installgroup = new-aadgroups -appid $appid -appname $appname -grouptype "Install" -prefix "sga-"
+$uninstallgroup = new-aadgroups -appid $appid -appname $appname -grouptype "Uninstall" -prefix "sga-"
+Write-Host "Created $installgroup for installing $appname"
+Write-Host "Created $uninstallgroup for uninstalling $appname"
 
-    ##Create Groups
-    Write-Verbose "Creating AAD Groups for $appname"
-    $installgroup = new-aadgroups -appid $appid -appname $appname -grouptype "Install"
-    $uninstallgroup = new-aadgroups -appid $appid -appname $appname -grouptype "Uninstall"
-    Write-Host "Created $installgroup for installing $appname"
-    Write-Host "Created $uninstallgroup for uninstalling $appname"
+##Create Install Script
+Write-Verbose "Creating Install Script for $appname"
+$installscript = new-installscript -appid $appid -appname $appname
+$installfilename = "install$appid.ps1"
+$installscriptfile = $apppath + "\" + $installfilename
+$installscript | Out-File $installscriptfile -Encoding utf8
+Write-Host "Script created at $installscriptfile"
 
-    ##Create Install Script
-    Write-Verbose "Creating Install Script for $appname"
-    $installscript = new-installscript -appid $appid -appname $appname
-    $installfilename = "install$appid.ps1"
-    $installscriptfile = $apppath + "\" + $installfilename
-    $installscript | Out-File $installscriptfile -Encoding utf8
-    Write-Host "Script created at $installscriptfile"
+##Create Uninstall Script
+Write-Verbose "Creating Uninstall Script for $appname"
+$uninstallscript = new-uninstallscript -appid $appid -appname $appname
+$uninstallfilename = "uninstall$appid.ps1"
+$uninstallscriptfile = $apppath + "\" + $uninstallfilename
+$uninstallscript | Out-File $uninstallscriptfile -Encoding utf8
+Write-Host "Script created at $uninstallscriptfile"
 
-    ##Create Uninstall Script
-    Write-Verbose "Creating Uninstall Script for $appname"
-    $uninstallscript = new-uninstallscript -appid $appid -appname $appname
-    $uninstallfilename = "uninstall$appid.ps1"
-    $uninstallscriptfile = $apppath + "\" + $uninstallfilename
-    $uninstallscript | Out-File $uninstallscriptfile -Encoding utf8
-    Write-Host "Script created at $uninstallscriptfile"
+##Create Detection Script
+Write-Verbose "Creating Detection Script for $appname"
+$detectionscript = new-detectionscriptinstall -appid $appid -appname $appname
+$detectionscriptfile = $apppath + "\detection$appid.ps1"
+$detectionscript | Out-File $detectionscriptfile -Encoding utf8
+Write-Host "Script created at $detectionscriptfile"
 
-    ##Create Detection Script
-    Write-Verbose "Creating Detection Script for $appname"
-    $detectionscript = new-detectionscriptinstall -appid $appid -appname $appname
-    $detectionscriptfile = $apppath + "\detection$appid.ps1"
-    $detectionscript | Out-File $detectionscriptfile -Encoding utf8
-    Write-Host "Script created at $detectionscriptfile"
+##Create IntuneWin
+Write-Verbose "Creating Intunewin File for $appname"
+$intunewinpath = $apppath + "\install$appid.intunewin"
+new-intunewinfile -appid "$appid" -appname "$appname" -apppath "$apppath" -setupfilename "$installscriptfile"
+Write-Host "Intunewin $intunewinpath Created"
+$sleep = 10
+foreach ($i in 0..$sleep) {
+    Write-Progress -Activity "Sleeping for $($sleep-$i) seconds" -PercentComplete ($i / $sleep * 100) -SecondsRemaining ($sleep - $i)
+    Start-Sleep -s 1
+}
 
-        ##Create IntuneWin
-        Write-Verbose "Creating Intunewin File for $appname"
-        $intunewinpath = $apppath + "\install$appid.intunewin"
-        new-intunewinfile -appid "$appid" -appname "$appname" -apppath "$apppath" -setupfilename "$installscriptfile"
-        Write-Host "Intunewin $intunewinpath Created"
-        $sleep = 10
-        foreach ($i in 0..$sleep) {
-            Write-Progress -Activity "Sleeping for $($sleep-$i) seconds" -PercentComplete ($i / $sleep * 100) -SecondsRemaining ($sleep - $i)
-            Start-Sleep -s 1
-        }
+##Create and upload Win32
+Write-Verbose "Uploading $appname to Intune"
+$installcmd = "powershell.exe -ExecutionPolicy Bypass -File $installfilename"
+$uninstallcmd = "powershell.exe -ExecutionPolicy Bypass -File $uninstallfilename"
+new-win32app -appid $appid -appname $appname -appfile $intunewinpath -installcmd $installcmd -uninstallcmd $uninstallcmd -detectionfile $detectionscriptfile
+Write-Host "$appname Created and uploaded"
 
+##Assign Win32
+Write-Verbose "Assigning Groups"
+grant-win32app -appname $appname -installgroup $installgroup -uninstallgroup $uninstallgroup
+Write-Host "Assigned $installgroup as Required Install to $appname"
+Write-Host "Assigned $uninstallgroup as Required Uninstall to $appname"
 
-        ##Create and upload Win32
-        Write-Verbose "Uploading $appname to Intune"
-        $installcmd = "powershell.exe -ExecutionPolicy Bypass -File $installfilename"
-        $uninstallcmd = "powershell.exe -ExecutionPolicy Bypass -File $uninstallfilename"
-        new-win32app -appid $appid -appname $appname -appfile $intunewinpath -installcmd $installcmd -uninstallcmd $uninstallcmd -detectionfile $detectionscriptfile
-        Write-Host "$appname Created and uploaded"
-    
-        ##Assign Win32
-        Write-Verbose "Assigning Groups"
-        grant-win32app -appname $appname -installgroup $installgroup -uninstallgroup $uninstallgroup
-        Write-Host "Assigned $installgroup as Required Install to $appname"
-        Write-Host "Assigned $uninstallgroup as Required Uninstall to $appname"
-    
-        ##Done
-        Write-Host "$appname packaged and deployed"
-    
-        Stop-Transcript
+##Done
+Write-Host "$appname packaged and deployed"
+
+Stop-Transcript
