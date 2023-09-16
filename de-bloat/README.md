@@ -6,3 +6,4 @@ https://andrewstaylor.com/2022/08/09/removing-bloatware-from-windows-10-11-via-s
 
 # Utilizzo
 
+![image](https://github.com/eko365sb/public/assets/136188106/b4bcc21b-31e1-4cf9-b6af-4eba89377f55)
