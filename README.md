@@ -1,7 +1,7 @@
-Windows 10/11 Bloatware removal PowerShell Scripts
+EKO365SB PowerShell Scripts Collection
 ==================================================
 
-**It includes some useful MS Intune PowerShell scripts located in the [📂de-bloat](de-bloat/) subfolder - for removing bloatware from Dell/HP/Lenovo Intune Provisioned PC**
+**It includes some useful Microsoft 365 PowerShell scripts located in the [📂public](public/) subfolder - for managing M365 Tenants**
 
 **[Download](https://github.com/eko365sb/public/releases) | [Table of Scripts](https://github.com/eko365/public/master/data/e365scripts.csv) | [FAQ](Docs/FAQ.md)** | **Note:** the scripts support Unicode - a modern console is recommended (e.g. *Windows Terminal*)
 
