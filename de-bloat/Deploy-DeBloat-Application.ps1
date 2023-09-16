@@ -1278,7 +1278,7 @@ function new-aadgroups {
     (
         $appid,
         $appname,
-        $grouptype
+        $grouptype,
         $prefix
     )
     switch ($grouptype) {
@@ -1445,9 +1445,8 @@ Connect-ToGraph -Scopes "DeviceManagementApps.ReadWrite.All, DeviceManagementCon
 Write-Verbose "Graph connection established"
 
 
-
 #Download it
-Invoke-WebRequest -Uri $appurl -OutFile $output -Method Get
+#Invoke-WebRequest -Uri $appurl -OutFile $output -Method Get
 
 $appname = "De-Bloat"
 $appid = "DeBloat"
@@ -1464,7 +1463,7 @@ $appurl = "https://raw.githubusercontent.com/eko365sb/public/main/de-bloat/deblo
 #Set the download location
 $output = $apppath + "\debloat-intune-script.ps1"
 
-Invoke-WebRequest -Uri $appurl -OutFile $output
+Invoke-WebRequest -Uri $appurl -OutFile $output -Method Get
 
 ##Create Groups
 Write-Verbose "Creating AAD Groups for $appname"

@@ -1,4 +1,4 @@
-$DebloatFolder = "C:\ProgramData\ManuDebloat"
+$DebloatFolder = "C:\ProgramData\Eko365\ManuDebloat"
 If (Test-Path $DebloatFolder) {
     Write-Output "$DebloatFolder exists. Skipping."
 }
@@ -9,7 +9,7 @@ Else {
     Write-Output "The folder $DebloatFolder was successfully created."
 }
 
-$templateFilePath = "C:\ProgramData\ManuDebloat\removemanubloat.ps1"
+$templateFilePath = "C:\ProgramData\Eko365\ManuDebloat\removemanubloat.ps1"
 
 Invoke-WebRequest `
 -Uri "https://raw.githubusercontent.com/eko365sb/public/main/de-bloat/RemoveManuBloat.ps1" `
