@@ -217,7 +217,7 @@ $Bloatware = @(
     "*Flipboard*"
     "*Twitter*"
     "*Facebook*"
-    "*Spotify*"
+    #"*Spotify*"
     "*Minecraft*"
     "*Royal Revolt*"
     "*Sway*"
