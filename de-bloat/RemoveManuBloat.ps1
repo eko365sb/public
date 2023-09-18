@@ -144,6 +144,9 @@ if ($manufacturer -like "*HP*") {
         "RealtekSemiconductorCorp.HPAudioControl",
         "HP Sure Recover",
         "HP Sure Run Module"
+        "HP Google Drive Plugin"
+        "HP Dropbox Plugin"
+        "HP Assess and Respond"
     )
 
     $HPidentifier = "AD2F1837"
