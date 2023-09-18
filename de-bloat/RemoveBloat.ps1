@@ -173,7 +173,7 @@ $Bloatware = @(
     "Microsoft.Messaging"
     "Microsoft.Microsoft3DViewer"
     "Microsoft.MicrosoftOfficeHub"
-    #"Microsoft.MicrosoftSolitaireCollection"
+    "Microsoft.MicrosoftSolitaireCollection"
     "Microsoft.NetworkSpeedTest"
     "Microsoft.MixedReality.Portal"
     "Microsoft.News"
