@@ -75,7 +75,7 @@ Get-ScriptVersion -liveuri "https://raw.githubusercontent.com/eko365sb/public/ma
 
 
 #Create Folder
-$DebloatFolder = "C:\ProgramData\ManuDebloat"
+$DebloatFolder = "C:\ProgramData\Eko365\ManuDebloat"
 If (Test-Path $DebloatFolder) {
     Write-Output "$DebloatFolder exists. Skipping."
 }
@@ -86,7 +86,7 @@ Else {
     Write-Output "The folder $DebloatFolder was successfully created."
 }
 
-Start-Transcript -Path "C:\ProgramData\ManuDebloat\ManuDebloat.log"
+Start-Transcript -Path "C:\ProgramData\Eko365\ManuDebloat\ManuDebloat.log"
 
 $locale = Get-WinSystemLocale | Select-Object -expandproperty Name
 
